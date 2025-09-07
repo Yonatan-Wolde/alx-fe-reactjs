@@ -16,6 +16,9 @@ function App() {
 
   return (
     <>
+<UserContex.Provider value={userData}>
+  <ProfilePage />
+</UserContex.Provider>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -43,9 +46,6 @@ function App() {
       <Footer />
       <UserProfile name="Alice" age="25" bio="FrontEnd-Loves hiking and photography" />
 
-<UserContex.Provider value={userData}>
-  <ProfilePage />
-</UserContex.Provider>
   
     </>
   )
