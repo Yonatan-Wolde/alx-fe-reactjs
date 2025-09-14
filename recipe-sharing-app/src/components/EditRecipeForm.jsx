@@ -6,9 +6,17 @@ const EditRecipeForm = ({ recipe }) => {
   const [title, setTitle] = useState(recipe.title);
   const [description, setDescription] = useState(recipe.description);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    updateRecipe({ ...recipe, title, description });
+  const handleSubmit = (event) => {
+    event.preventDefault(); // ✅ Fix: prevent default form submission
+
+    if (!title.trim() || !description.trim()) return;
+
+    updateRecipe({
+      ...recipe,
+      title,
+      description,
+    });
+
     alert('Recipe updated!');
   };
 
