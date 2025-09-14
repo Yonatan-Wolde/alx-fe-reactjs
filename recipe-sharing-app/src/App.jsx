@@ -1,11 +1,11 @@
 import AddRecipeForm from "./components/AddRecipeForm";
-import ReceipeList from "./components/RecipeList ";
+import RecipeList from "./components/RecipeList";
 
 function App() {
   return (  
     <>
     <AddRecipeForm />
-    <ReceipeList />
+    <RecipeList />
     </>
   );
 }
