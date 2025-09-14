@@ -2,18 +2,21 @@ import { create } from 'zustand';
 
 export const useRecipeStore = create((set, get) => ({
   recipes: [],
-  searchTerm: '',
-  
-  setSearchTerm: (term) => set({ searchTerm: term }),
+  favorites: [],
 
+  // Add a recipe
   addRecipe: (newRecipe) =>
     set((state) => ({ recipes: [...state.recipes, newRecipe] })),
 
+  // Delete a recipe
   deleteRecipe: (id) =>
     set((state) => ({
       recipes: state.recipes.filter((recipe) => recipe.id !== id),
+      // Also remove from favorites if present
+      favorites: state.favorites.filter((favId) => favId !== id),
     })),
 
+  // Update a recipe
   updateRecipe: (updatedRecipe) =>
     set((state) => ({
       recipes: state.recipes.map((recipe) =>
@@ -21,12 +24,29 @@ export const useRecipeStore = create((set, get) => ({
       ),
     })),
 
-  // derived state: filteredRecipes depends on recipes and searchTerm
-  filteredRecipes: () => {
-    const { recipes, searchTerm } = get();
-    if (!searchTerm.trim()) return recipes;
-    return recipes.filter((recipe) =>
-      recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  },
+  // Favorites management
+  addFavorite: (recipeId) =>
+    set((state) => {
+      if (state.favorites.includes(recipeId)) return {}; // prevent duplicates
+      return { favorites: [...state.favorites, recipeId] };
+    }),
+
+  removeFavorite: (recipeId) =>
+    set((state) => ({
+      favorites: state.favorites.filter((id) => id !== recipeId),
+    })),
+
+  // Generate mock recommendations based on favorites
+  recommendations: [],
+
+  generateRecommendations: () =>
+    set((state) => {
+      // For example, recommend random recipes NOT already favorited
+      const notFavs = state.recipes.filter(
+        (recipe) => !state.favorites.includes(recipe.id)
+      );
+      // Randomly pick up to 3 recipes
+      const recommended = notFavs.sort(() => 0.5 - Math.random()).slice(0, 3);
+      return { recommendations: recommended };
+    }),
 }));
