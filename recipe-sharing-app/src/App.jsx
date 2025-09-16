@@ -3,6 +3,7 @@ import RecipeList from './components/RecipeList';
 import AddRecipeForm from './components/AddRecipeForm';
 import RecipeDetails from './components/RecipeDetails';
 import EditRecipeForm from './components/EditRecipeForm';
+import SearchBar from './components/SearchBar'; // Import the new SearchBar
 import './App.css';
 
 function App() {
@@ -13,6 +14,8 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
+              {/* Display the search bar on the main page */}
+              <SearchBar />
               <AddRecipeForm />
               <RecipeList />
             </>
