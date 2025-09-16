@@ -1,26 +1,17 @@
 import { useRecipeStore } from './recipeStore';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import DeleteRecipeButton from './DeleteRecipeButton';
 
 const RecipeDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const recipe = useRecipeStore(state =>
     state.recipes.find(r => r.id === parseInt(id))
   );
-  
-  const deleteRecipe = useRecipeStore(state => state.deleteRecipe);
 
   if (!recipe) {
-    return <h2>Recipe not found.</h2>;
+    return <h2>Recipe not found!</h2>;
   }
-  
-  const handleDelete = () => {
-    if (window.confirm('Are you sure you want to delete this recipe?')) {
-      deleteRecipe(recipe.id);
-      navigate('/');
-    }
-  };
 
   return (
     <div>
@@ -31,7 +22,8 @@ const RecipeDetails = () => {
         <button>Edit Recipe</button>
       </Link>
       
-      <button onClick={handleDelete}>Delete Recipe</button>
+      {/* Render the new DeleteRecipeButton component and pass the recipeId */}
+      <DeleteRecipeButton recipeId={recipe.id} />
     </div>
   );
 };
