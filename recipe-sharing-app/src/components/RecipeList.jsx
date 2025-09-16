@@ -1,5 +1,5 @@
-// RecipeList component
 import { useRecipeStore } from './recipeStore';
+import { Link } from 'react-router-dom';
 
 const RecipeList = () => {
   const recipes = useRecipeStore(state => state.recipes);
@@ -8,7 +8,10 @@ const RecipeList = () => {
     <div>
       {recipes.map(recipe => (
         <div key={recipe.id}>
-          <h3>{recipe.title}</h3>
+          {/* Use the Link component to make the recipe title clickable */}
+          <Link to={`/recipes/${recipe.id}`}>
+            <h3>{recipe.title}</h3>
+          </Link>
           <p>{recipe.description}</p>
         </div>
       ))}
