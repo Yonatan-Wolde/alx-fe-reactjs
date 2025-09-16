@@ -22,7 +22,6 @@ const RecipeDetails = () => {
         <button>Edit Recipe</button>
       </Link>
       
-      {/* Render the new DeleteRecipeButton component and pass the recipeId */}
       <DeleteRecipeButton recipeId={recipe.id} />
     </div>
   );
