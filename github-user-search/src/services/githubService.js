@@ -1,20 +1,28 @@
 import axios from "axios";
 
-// Task 1: single user search
+// Task 1: fetch single user by username
 export const fetchUserData = async (username) => {
   const response = await axios.get(`https://api.github.com/users/${username}`);
   return response.data;
 };
 
-// Task 2: advanced search
+// Task 2: fetch multiple users with advanced filters
 export const fetchAdvancedUsers = async (username, location, minRepos) => {
-  let query = "";
-  if (username) query += `${username} in:login `;
-  if (location) query += `location:${location} `;
-  if (minRepos) query += `repos:>=${minRepos} `;
+  let query = username || "";
+  if (location) query += `+location:${location}`;
+  if (minRepos) query += `+repos:>=${minRepos}`;
 
-  const response = await axios.get(
-    `https://api.github.com/search/users?q=${query.trim()}`
+  const response = await axios.get(`https://api.github.com/search/users?q=${query}`);
+  // API returns items array
+  const users = response.data.items || [];
+
+  // fetch detailed info for each user (location, public_repos)
+  const detailedUsers = await Promise.all(
+    users.map(async (user) => {
+      const userDetails = await axios.get(`https://api.github.com/users/${user.login}`);
+      return userDetails.data;
+    })
   );
-  return response.data.items; // array of users
+
+  return detailedUsers;
 };
