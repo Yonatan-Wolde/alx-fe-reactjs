@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { fetchAdvancedUsers } from "../services/githubService";
 
 function Search() {
   const [username, setUsername] = useState("");
-  const [user, setUser] = useState(null);
+  const [location, setLocation] = useState("");
+  const [minRepos, setMinRepos] = useState("");
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -11,13 +13,13 @@ function Search() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setUser(null);
+    setUsers([]);
 
     try {
-      const data = await fetchUserData(username);
-      setUser(data);
+      const results = await fetchAdvancedUsers(username, location, minRepos);
+      if (results.length === 0) setError("Looks like we cant find the user");
+      else setUsers(results);
     } catch (err) {
-      // This exact message is required for the tester
       setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
@@ -25,14 +27,28 @@ function Search() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <form onSubmit={handleSubmit} className="flex gap-2">
+    <div className="max-w-xl mx-auto p-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 md:flex-row md:items-end">
         <input
           type="text"
-          placeholder="Enter GitHub username"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className="border rounded p-2 flex-1"
+        />
+        <input
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="border rounded p-2 flex-1"
+        />
+        <input
+          type="number"
+          placeholder="Minimum repos"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+          className="border rounded p-2 w-32"
         />
         <button
           type="submit"
@@ -45,26 +61,30 @@ function Search() {
       {loading && <p className="mt-4">Loading...</p>}
       {error && <p className="mt-4 text-red-500">{error}</p>}
 
-      {user && (
-        <div className="mt-4 border p-4 rounded shadow-sm flex items-center gap-4">
-          <img
-            src={user.avatar_url}
-            alt={user.login}
-            className="w-16 h-16 rounded-full"
-          />
-          <div>
-            <h2 className="font-bold">{user.login}</h2>
-            <a
-              href={user.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline"
-            >
-              View Profile
-            </a>
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        {users.map((user) => (
+          <div key={user.id} className="border p-4 rounded shadow-sm flex items-center gap-4">
+            <img
+              src={user.avatar_url}
+              alt={user.login}
+              className="w-16 h-16 rounded-full"
+            />
+            <div>
+              <h2 className="font-bold">{user.login}</h2>
+              <p>Location: {user.location || "N/A"}</p>
+              <p>Repos: {user.public_repos || "N/A"}</p>
+              <a
+                href={user.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                View Profile
+              </a>
+            </div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }
