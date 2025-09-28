@@ -1,6 +1,8 @@
+import UserProfile from "./components/UserProfile";
+
 function App() {
   return ( 
-    <p>Lorem ipsum dolor sit.</p>
+    <UserProfile />
    );
 }
 
