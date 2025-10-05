@@ -1,15 +1,11 @@
-import Search from "./components/Search";
+import React from "react";
+import HomePage from "./components/HomePage";
 
 function App() {
   return (
-    <div>
-      <h1 className="text-center text-3xl font-bold my-4">
-        GitHub User Search
-      </h1>
-
-      <Search />
-    </div>
-  );
+  <div>
+    <HomePage />
+  </div>);
 }
 
 export default App;
