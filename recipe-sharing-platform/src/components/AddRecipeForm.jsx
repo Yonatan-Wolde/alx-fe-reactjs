@@ -3,13 +3,11 @@ import React, { useState } from "react";
 const AddRecipeForm = () => {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [steps, setSteps] = useState(""); // renamed from instructions
+  const [steps, setSteps] = useState("");
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Simple validation
+  // Separate validate function
+  const validate = () => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
     if (!ingredients.trim()) newErrors.ingredients = "Ingredients are required";
@@ -18,22 +16,27 @@ const AddRecipeForm = () => {
     if (ingredients.split(",").length < 2)
       newErrors.ingredients = "Please provide at least two ingredients";
 
+    return newErrors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newErrors = validate(); // call validate function
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    // If validation passes
     const newRecipe = {
       id: Date.now(),
       title,
       ingredients: ingredients.split(",").map((item) => item.trim()),
-      steps: steps.split("\n").map((step) => step.trim()), // renamed
+      steps: steps.split("\n").map((step) => step.trim()),
     };
 
     console.log("New Recipe Submitted:", newRecipe);
 
-    // Reset form
     setTitle("");
     setIngredients("");
     setSteps("");
