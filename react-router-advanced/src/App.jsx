@@ -18,7 +18,7 @@ function Home() {
 }
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
     <Router>
@@ -34,7 +34,8 @@ function App() {
             <Route path="profile/*" element={<Profile />} />
           </Route>
 
-          <Route path="blog/:postId" element={<BlogPost />} />
+          {/* Dynamic blog post route */}
+          <Route path="/blog/:id" element={<BlogPost />} />
 
           <Route path="*" element={<h2>Page Not Found</h2>} />
         </Routes>

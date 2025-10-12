@@ -15,7 +15,6 @@ const Profile = () => {
       <Routes>
         <Route path="details" element={<ProfileDetails />} />
         <Route path="settings" element={<ProfileSettings />} />
-        {/* Default nested route, optional */}
         <Route path="*" element={<p>Select a profile section.</p>} />
       </Routes>
     </div>
