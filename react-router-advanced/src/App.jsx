@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import Profile from './components/Profile';
-import ProfileDetails from './components/ProfileDetails';
-import ProfileSettings from './components/ProfileSettings';
 import ProtectedRoute from './components/ProtectedRoute';
 import BlogPost from './components/BlogPost';
 
@@ -20,7 +18,7 @@ function Home() {
 }
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
   return (
     <Router>
@@ -31,11 +29,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
 
+          {/* Protected Route */}
           <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
-            <Route path="profile" element={<Profile />}>
-              <Route path="details" element={<ProfileDetails />} />
-              <Route path="settings" element={<ProfileSettings />} />
-            </Route>
+            <Route path="profile/*" element={<Profile />} />
           </Route>
 
           <Route path="blog/:postId" element={<BlogPost />} />

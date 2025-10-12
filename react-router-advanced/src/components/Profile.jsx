@@ -1,5 +1,7 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
+import ProfileDetails from './ProfileDetails';
+import ProfileSettings from './ProfileSettings';
 
 const Profile = () => {
   return (
@@ -9,7 +11,13 @@ const Profile = () => {
         <Link to="details">Details</Link> |{' '}
         <Link to="settings">Settings</Link>
       </nav>
-      <Outlet />
+
+      <Routes>
+        <Route path="details" element={<ProfileDetails />} />
+        <Route path="settings" element={<ProfileSettings />} />
+        {/* Default nested route, optional */}
+        <Route path="*" element={<p>Select a profile section.</p>} />
+      </Routes>
     </div>
   );
 };
