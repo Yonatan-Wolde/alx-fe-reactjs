@@ -1,3 +1,4 @@
+// src/components/FormikForm.jsx
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -14,6 +15,7 @@ export default function FormikForm() {
       validationSchema={validationSchema}
       onSubmit={(values) => {
         console.log("Registered with Formik:", values);
+        alert("Formik registration successful!");
       }}
     >
       {() => (
